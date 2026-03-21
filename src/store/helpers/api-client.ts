@@ -15,7 +15,7 @@ export async function apiClient<T>(url: string, options: RequestInit = {}): Prom
     if (response.ok) return (await response.json()) as T;
 
     if (!isTransientError(response.status) || attempt === maxRetries) {
-      throw new Error(`API request failed with status ${response.status}: ${response.statusText}`);
+      throw new Error(`API request failed with status ${response.status}`);
     }
 
     await sleep(backoffTimeInMilliseconds(attempt));

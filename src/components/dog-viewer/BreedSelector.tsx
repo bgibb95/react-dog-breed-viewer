@@ -1,8 +1,8 @@
+import { useDogStore } from '@/store/use-dog-store';
 import { useState } from 'react';
-import { useDogStore } from '../store/use-dog-store';
-import { ErrorState } from './ErrorState';
-import { SearchIcon } from './icons/SearchIcon';
-import { LoadingState } from './LoadingState';
+import { SearchIcon } from '@/components/ui/icons/SearchIcon';
+import { ErrorState } from '@/components/ui/feedback/ErrorState';
+import { LoadingState } from '@/components/ui/feedback/LoadingState';
 
 export function BreedSelector() {
   const breeds = useDogStore(({ breeds }) => breeds);

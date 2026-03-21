@@ -35,9 +35,7 @@ describe('apiClient', () => {
       statusText: 'Not Found',
     } as Response);
 
-    await expect(apiClient(mockUrl)).rejects.toThrow(
-      'API request failed with status 404: Not Found',
-    );
+    await expect(apiClient(mockUrl)).rejects.toThrow('API request failed with status 404');
 
     // 1 initial attempt
     expect(fetch).toHaveBeenCalledTimes(1);
@@ -106,7 +104,7 @@ describe('apiClient', () => {
 
     // Run timers concurrently with the assertion so all retries complete
     await Promise.all([
-      expect(apiClient(mockUrl)).rejects.toThrow('Too Many Requests'),
+      expect(apiClient(mockUrl)).rejects.toThrow('API request failed with status 429'),
       vi.runAllTimersAsync(),
     ]);
 

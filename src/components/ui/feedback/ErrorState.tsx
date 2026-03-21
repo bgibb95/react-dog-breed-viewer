@@ -1,4 +1,4 @@
-import { ErrorIcon } from './icons/ErrorIcon';
+import { ErrorIcon } from '../icons/ErrorIcon';
 
 type Props = {
   message: string;

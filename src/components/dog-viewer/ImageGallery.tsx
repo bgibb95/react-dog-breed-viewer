@@ -1,6 +1,6 @@
-import { useDogStore } from '../store/use-dog-store';
-import { ErrorState } from './ErrorState';
-import { LoadingState } from './LoadingState';
+import { useDogStore } from '@/store/use-dog-store';
+import { ErrorState } from '@/components/ui/feedback/ErrorState';
+import { LoadingState } from '@/components/ui/feedback/LoadingState';
 
 export function ImageGallery() {
   const images = useDogStore(({ images }) => images);
