@@ -1,5 +1,37 @@
 # React + TypeScript + Vite
 
+## Getting Started
+
+### Prerequisites
+
+- **Node.js**: version 20.19+ or 22.12+
+
+### Installation
+
+To install the project dependencies, run:
+
+```bash
+npm install
+```
+
+### Running the Development Server
+
+To start the local development server, run:
+
+```bash
+npm run dev
+```
+
+### Tech Stack
+
+- **Framework**: [React 19](https://react.dev/)
+- **Build Tool**: [Vite 8](https://vitejs.dev/)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Styling**: [Tailwind CSS 4](https://tailwindcss.com/)
+- **State Management**: [Zustand](https://github.com/pmndrs/zustand)
+
+---
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
