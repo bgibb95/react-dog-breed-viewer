@@ -9,7 +9,7 @@ export function SpinnerIcon(props: ComponentProps<'svg'>) {
         cy="12"
         r="10"
         stroke="currentColor"
-        strokeWidth="3"
+        strokeWidth="4"
       ></circle>
       <path
         className="opacity-75"

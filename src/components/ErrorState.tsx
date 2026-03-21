@@ -12,7 +12,7 @@ export function ErrorState({ message }: Props) {
         Oops! Something went wrong
       </h3>
       <h4 className="text-md text-red-900 mb-4 text-center">
-        Please try a different breed or try again later
+        Please try reloading the page or try again later
       </h4>
       <p className="text-red-700 text-sm text-center max-w-md mb-6">{message}</p>
     </div>
