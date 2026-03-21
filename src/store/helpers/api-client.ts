@@ -3,27 +3,23 @@ const initialBackoffTimeInMilliseconds = 1000; // 1 second
 const tooManyRequestsHttpStatusCode = 429;
 
 const sleep = (milliseconds: number) => new Promise((resolve) => setTimeout(resolve, milliseconds));
-const backoffTimeInMilliseconds = (attempt: number) => initialBackoffTimeInMilliseconds * Math.pow(2, attempt);
+const backoffTimeInMilliseconds = (attempt: number) =>
+  initialBackoffTimeInMilliseconds * Math.pow(2, attempt);
+const isTransientError = (status: number) =>
+  status === tooManyRequestsHttpStatusCode || (status >= 500 && status <= 599);
 
 export async function apiClient<T>(url: string, options: RequestInit = {}): Promise<T> {
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
-    try {
-      const response = await fetch(url, options);
+    const response = await fetch(url, options);
 
-      if (response.ok) return (await response.json()) as T;
+    if (response.ok) return (await response.json()) as T;
 
-      if (response.status === tooManyRequestsHttpStatusCode && attempt < maxRetries) {
-        await sleep(backoffTimeInMilliseconds(attempt));
-        continue;
-      }
-
+    if (!isTransientError(response.status) || attempt === maxRetries) {
       throw new Error(`API request failed with status ${response.status}: ${response.statusText}`);
-    } catch (error: unknown) {
-      if (attempt === maxRetries) throw error;
-
-      await sleep(backoffTimeInMilliseconds(attempt));
     }
+
+    await sleep(backoffTimeInMilliseconds(attempt));
   }
 
-  throw new Error('Max retries reached');
+  throw new Error('Unreachable: Max retries exhausted');
 }

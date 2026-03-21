@@ -15,7 +15,7 @@ export async function fetchBreedImages(breed: string): Promise<string[]> {
   if (cachedImageUrls) return cachedImageUrls;
 
   const response = await apiClient<BreedImagesResponse>(
-    `https://dog.ceo/api/breed/${breed}/images/random/3`
+    `https://dog.ceo/api/breed/${breed}/images/random/3`,
   );
 
   if (response.status !== 'success')

@@ -38,17 +38,15 @@ export const useDogStore = create<DogState>((set, get) => ({
     try {
       const images = await fetchBreedImages(breed);
       // Ensure the user hasn't selected another breed while these photos were loading
-      if (get().selectedBreed === breed) {
-        set({ images, isLoadingImages: false });
-      }
+      if (get().selectedBreed !== breed) return;
+
+      set({ images, isLoadingImages: false });
     } catch (error: unknown) {
-      if (get().selectedBreed === breed) {
-        const errorMessage =
-          error instanceof Error
-            ? error.message
-            : 'An unknown error occurred while fetching images.';
-        set({ imagesError: errorMessage, images: [], isLoadingImages: false });
-      }
+      if (get().selectedBreed !== breed) return;
+
+      const errorMessage =
+        error instanceof Error ? error.message : 'An unknown error occurred while fetching images.';
+      set({ imagesError: errorMessage, images: [], isLoadingImages: false });
     }
   },
 }));
