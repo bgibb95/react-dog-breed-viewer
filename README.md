@@ -103,3 +103,17 @@ export default defineConfig([
   },
 ]);
 ```
+
+## Deployment
+
+### Vercel
+
+This project is configured for easy deployment on [Vercel](https://vercel.com/).
+
+1. **API Proxy**: The project uses a `vercel.json` file to proxy requests from `/api` to `https://dummyjson.com`.
+2. **SPA Routing**: All non-asset requests are redirected to `index.html` to support client-side routing.
+
+To deploy:
+- Push your code to a GitHub repository.
+- Connect your repository to Vercel.
+- Vercel will automatically detect the Vite configuration and deploy your app.
