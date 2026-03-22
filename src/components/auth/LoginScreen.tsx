@@ -1,5 +1,5 @@
-import { DogIcon } from '@/components/ui/icons/DogIcon';
 import { ErrorState } from '@/components/ui/feedback/ErrorState';
+import { DogIcon } from '@/components/ui/icons/DogIcon';
 import { Input } from '@/components/ui/Input';
 import { useAuthStore } from '@/store/use-auth-store';
 import { useState, type SyntheticEvent } from 'react';
@@ -64,7 +64,7 @@ export function LoginScreen() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-xl shadow-sm text-sm font-semibold text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-xl shadow-sm text-sm font-semibold text-white bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer"
               >
                 {isLoading ? 'Signing in...' : 'Sign in'}
               </button>

@@ -27,10 +27,11 @@ export const useDogStore = create<DogState>((set, get) => ({
     try {
       const breeds = await fetchBreeds();
       set({ breeds, isLoadingBreeds: false });
-    } catch (error: unknown) {
-      const errorMessage =
-        error instanceof Error ? error.message : 'An unknown error occurred while fetching breeds.';
-      set({ breedsError: errorMessage, isLoadingBreeds: false });
+    } catch {
+      set({
+        breedsError: "We're having trouble loading the dog breeds right now.",
+        isLoadingBreeds: false,
+      });
     }
   },
   setSelectedBreed: async (breed: string) => {
@@ -41,12 +42,14 @@ export const useDogStore = create<DogState>((set, get) => ({
       if (get().selectedBreed !== breed) return;
 
       set({ images, isLoadingImages: false });
-    } catch (error: unknown) {
+    } catch {
       if (get().selectedBreed !== breed) return;
 
-      const errorMessage =
-        error instanceof Error ? error.message : 'An unknown error occurred while fetching images.';
-      set({ imagesError: errorMessage, images: [], isLoadingImages: false });
+      set({
+        imagesError: `We couldn't load the photos for ${breed}.`,
+        images: [],
+        isLoadingImages: false,
+      });
     }
   },
 }));

@@ -6,12 +6,12 @@ export function UserProfile() {
   if (!user) return null;
 
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-1.5 sm:gap-4">
       <div className="flex items-center gap-2">
         <img
           src={user.image}
           alt={user.firstName}
-          className="w-8 h-8 rounded-full bg-gray-100 border border-gray-200"
+          className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gray-100 border border-gray-200"
         />
         <span className="text-sm font-medium text-text hidden sm:block">
           {user.firstName} {user.lastName}
@@ -19,7 +19,7 @@ export function UserProfile() {
       </div>
       <button
         onClick={logout}
-        className="text-sm font-medium text-text-light hover:text-primary transition-colors px-3 py-1.5 rounded-lg hover:bg-primary/5 cursor-pointer"
+        className="text-xs sm:text-sm font-medium text-text-light hover:text-primary transition-colors px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg hover:bg-primary/5 cursor-pointer shrink-0"
       >
         Log out
       </button>

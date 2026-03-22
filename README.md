@@ -22,6 +22,17 @@ To start the local development server, run:
 npm run dev
 ```
 
+### Running the Backend Server
+
+To start the backend server (Node.js + Express), run:
+
+```bash
+npm run backend-server
+```
+
+> [!IMPORTANT]
+> The backend server **must be running** for the **Favourites** functionality to work. It handles the storage and retrieval of saved dog images.
+
 ### Tech Stack
 
 - **Framework**: [React 19](https://react.dev/)
@@ -108,12 +119,7 @@ export default defineConfig([
 
 ### Vercel
 
-This project is configured for easy deployment on [Vercel](https://vercel.com/).
+The frontend of this project is configured for easy deployment on [Vercel](https://vercel.com/).
 
 1. **API Proxy**: The project uses a `vercel.json` file to proxy requests from `/api` to `https://dummyjson.com`.
 2. **SPA Routing**: All non-asset requests are redirected to `index.html` to support client-side routing.
-
-To deploy:
-- Push your code to a GitHub repository.
-- Connect your repository to Vercel.
-- Vercel will automatically detect the Vite configuration and deploy your app.

@@ -9,7 +9,7 @@ describe('ErrorState', () => {
 
     expect(screen.getByText('Oops! Something went wrong')).toBeInTheDocument();
     expect(
-      screen.getByText('Please try reloading the page or try again later'),
+      screen.getByText('Please try reloading the page or try again later.'),
     ).toBeInTheDocument();
     expect(screen.getByText(errorMessage)).toBeInTheDocument();
   });

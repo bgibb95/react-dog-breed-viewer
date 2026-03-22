@@ -14,8 +14,6 @@ type User = {
   lastName: string;
   gender: string;
   image: string;
-  accessToken?: string;
-  refreshToken?: string;
 };
 
 type AuthState = {
@@ -29,6 +27,7 @@ type AuthState = {
 };
 
 let refreshTimer: ReturnType<typeof setInterval> | null = null;
+let isInitialising = false;
 
 function setupRefreshTimer(refreshSession: () => Promise<boolean>) {
   if (refreshTimer) clearInterval(refreshTimer);
@@ -52,9 +51,11 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
       localStorage.setItem('isAuthenticated', 'true');
       set({ user, isLoading: false });
-    } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : 'Login failed';
-      set({ error: errorMessage, isLoading: false });
+    } catch {
+      set({
+        error: 'Login failed. Please check your username and password.',
+        isLoading: false,
+      });
     }
   },
   logout: () => {
@@ -63,10 +64,14 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     set({ user: null });
   },
   initAuth: async () => {
+    if (isInitialising) return;
+    isInitialising = true;
+
     set({ isLoading: true });
 
     if (localStorage.getItem('isAuthenticated') !== 'true') {
       set({ isLoading: false });
+      isInitialising = false;
       return;
     }
 
@@ -93,6 +98,8 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
       get().logout();
       set({ isLoading: false });
+    } finally {
+      isInitialising = false;
     }
   },
   refreshSession: async () => {

@@ -1,8 +1,14 @@
-import { useDogStore } from '@/store/use-dog-store';
 import { ErrorState } from '@/components/ui/feedback/ErrorState';
 import { LoadingState } from '@/components/ui/feedback/LoadingState';
+import { useDogStore } from '@/store/use-dog-store';
+import type { ReactNode } from 'react';
+import { ImageCard } from './ImageCard';
 
-export function ImageGallery() {
+type Props = {
+  actionOverlay?: (imageUrl: string) => ReactNode;
+};
+
+export function ImageGallery({ actionOverlay }: Props) {
   const images = useDogStore(({ images }) => images);
   const selectedBreed = useDogStore(({ selectedBreed }) => selectedBreed);
   const isLoadingImages = useDogStore(({ isLoadingImages }) => isLoadingImages);
@@ -42,18 +48,12 @@ export function ImageGallery() {
 
       <div className="columns-1 md:columns-2 lg:columns-3 gap-6">
         {images.map((imageUrl) => (
-          <div
+          <ImageCard
             key={imageUrl}
-            className="group relative break-inside-avoid mb-6 overflow-hidden rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 bg-gray-100"
-          >
-            <div className="absolute inset-0 bg-linear-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10 duration-300 pointer-events-none" />
-            <img
-              src={imageUrl}
-              alt={`${selectedBreed} dog`}
-              className="w-full h-auto block transform group-hover:scale-105 transition-transform duration-700 ease-in-out"
-              loading="lazy"
-            />
-          </div>
+            imageUrl={imageUrl}
+            selectedBreed={selectedBreed!}
+            actionOverlay={actionOverlay?.(imageUrl)}
+          />
         ))}
       </div>
     </div>

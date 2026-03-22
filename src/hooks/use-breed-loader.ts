@@ -7,6 +7,4 @@ export function useBreedLoader() {
   useEffect(() => {
     loadBreeds();
   }, [loadBreeds]);
-
-  return { loadBreeds };
 }

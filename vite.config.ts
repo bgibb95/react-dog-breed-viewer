@@ -12,7 +12,14 @@ export default defineConfig({
     },
   },
   server: {
+    watch: {
+      ignored: ['**/server/favourites.json'],
+    },
     proxy: {
+      '/api/favourites': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+      },
       '/api': {
         target: 'https://dummyjson.com',
         changeOrigin: true,

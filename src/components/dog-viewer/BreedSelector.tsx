@@ -1,8 +1,8 @@
-import { useDogStore } from '@/store/use-dog-store';
-import { useState } from 'react';
-import { SearchIcon } from '@/components/ui/icons/SearchIcon';
 import { ErrorState } from '@/components/ui/feedback/ErrorState';
 import { LoadingState } from '@/components/ui/feedback/LoadingState';
+import { SearchIcon } from '@/components/ui/icons/SearchIcon';
+import { useDogStore } from '@/store/use-dog-store';
+import { useState } from 'react';
 
 export function BreedSelector() {
   const breeds = useDogStore(({ breeds }) => breeds);
@@ -28,17 +28,14 @@ export function BreedSelector() {
   return (
     <div className="flex flex-col h-full bg-surface rounded-2xl shadow-sm border border-gray-100/50 overflow-hidden">
       <div className="p-4 border-b border-gray-100">
-        <div className="relative group">
+        <div className="relative">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <SearchIcon
-              width="20"
-              height="20"
-              className="text-gray-500 group-focus-within:text-primary transition-colors"
-            />
+            <SearchIcon width="20" height="20" className="text-gray-500" />
           </div>
           <input
             type="text"
-            className="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl leading-5 bg-gray-50/50 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 focus:bg-white transition-all sm:text-sm"
+            aria-label="Search breeds"
+            className="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl leading-5 bg-gray-50/50 placeholder-gray-500 transition-all sm:text-sm"
             placeholder="Search for a breed"
             value={searchQuery}
             onChange={(event) => setSearchQuery(event.target.value)}
