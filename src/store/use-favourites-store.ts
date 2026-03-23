@@ -3,16 +3,28 @@ import { apiClient } from './helpers/api-client';
 
 type Favourites = string[];
 
-type FavouritesState = {
+type FavouritesStateProperties = {
   favourites: Favourites;
   isLoading: boolean;
   fetchError: string | null;
   actionError: string | null;
   lastActionedUrl: string | null;
+};
+
+type FavouritesState = FavouritesStateProperties & {
   fetchFavourites: () => Promise<void>;
   addFavourite: (imageUrl: string) => Promise<void>;
   removeFavourite: (imageUrl: string) => Promise<void>;
+  reset: () => void;
 };
+
+const initialState = {
+  favourites: [],
+  isLoading: false,
+  fetchError: null,
+  actionError: null,
+  lastActionedUrl: null,
+} as const satisfies FavouritesStateProperties;
 
 async function toggleFavourite(
   set: (state: Partial<FavouritesState>) => void,
@@ -39,11 +51,7 @@ async function toggleFavourite(
 }
 
 export const useFavouritesStore = create<FavouritesState>((set) => ({
-  favourites: [],
-  isLoading: false,
-  fetchError: null,
-  actionError: null,
-  lastActionedUrl: null,
+  ...initialState,
   fetchFavourites: async () => {
     set({ isLoading: true, fetchError: null, lastActionedUrl: null });
     try {
@@ -70,4 +78,5 @@ export const useFavouritesStore = create<FavouritesState>((set) => ({
       'DELETE',
       "We couldn't remove this image from your favourites. Please try again later.",
     ),
+  reset: () => set(initialState),
 }));

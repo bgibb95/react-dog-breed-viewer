@@ -1,5 +1,7 @@
 import { create } from 'zustand';
 import { apiClient } from './helpers/api-client';
+import { useDogStore } from './use-dog-store';
+import { useFavouritesStore } from './use-favourites-store';
 
 const authApiBaseUrl = '/api/auth';
 const tokenExpirationTimeInMinutes = 30;
@@ -61,7 +63,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   logout: () => {
     if (refreshTimer) clearInterval(refreshTimer);
     localStorage.removeItem('isAuthenticated');
-    set({ user: null });
+    useDogStore.getState().reset();
+    useFavouritesStore.getState().reset();
+    set({ user: null, error: null });
   },
   initAuth: async () => {
     if (isInitialising) return;

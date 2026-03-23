@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { fetchBreedImages } from './helpers/fetch-breed-images';
 import { fetchBreeds } from './helpers/fetch-breeds';
 
-type DogState = {
+type DogStateProperties = {
   breeds: string[];
   isLoadingBreeds: boolean;
   breedsError: string | null;
@@ -10,11 +10,15 @@ type DogState = {
   images: string[];
   isLoadingImages: boolean;
   imagesError: string | null;
-  loadBreeds: () => Promise<void>;
-  setSelectedBreed: (breed: string) => Promise<void>;
 };
 
-export const useDogStore = create<DogState>((set, get) => ({
+type DogState = DogStateProperties & {
+  loadBreeds: () => Promise<void>;
+  setSelectedBreed: (breed: string) => Promise<void>;
+  reset: () => void;
+};
+
+const initialState = {
   breeds: [],
   isLoadingBreeds: false,
   breedsError: null,
@@ -22,6 +26,10 @@ export const useDogStore = create<DogState>((set, get) => ({
   images: [],
   isLoadingImages: false,
   imagesError: null,
+} as const satisfies DogStateProperties;
+
+export const useDogStore = create<DogState>((set, get) => ({
+  ...initialState,
   loadBreeds: async () => {
     set({ isLoadingBreeds: true, breedsError: null });
     try {
@@ -52,4 +60,5 @@ export const useDogStore = create<DogState>((set, get) => ({
       });
     }
   },
+  reset: () => set(initialState),
 }));
