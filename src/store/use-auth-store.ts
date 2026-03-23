@@ -108,7 +108,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ expiresInMins: tokenExpirationTimeInMinutes }),
-        credentials: 'include',
       });
 
       if (!response.ok) return false;

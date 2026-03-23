@@ -8,7 +8,7 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b border-gray-200/50 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between gap-2 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between gap-1 overflow-hidden">
         <Link
           to="/"
           className="flex items-center gap-2 sm:gap-3 cursor-pointer group rounded-xl p-1 min-w-0"
@@ -31,7 +31,7 @@ export function Header() {
             to={isGallery ? '/favourites' : '/'}
             className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all bg-primary text-white shadow-md hover:bg-primary/90`}
           >
-            {isGallery ? 'My Favourites' : 'Gallery'}
+            {isGallery ? 'Favourites' : 'Gallery'}
           </Link>
           <UserProfile />
         </div>

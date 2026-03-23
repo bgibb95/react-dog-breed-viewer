@@ -51,7 +51,7 @@ export function ImageGallery({ actionOverlay }: Props) {
           <ImageCard
             key={imageUrl}
             imageUrl={imageUrl}
-            selectedBreed={selectedBreed!}
+            selectedBreed={selectedBreed}
             actionOverlay={actionOverlay?.(imageUrl)}
           />
         ))}

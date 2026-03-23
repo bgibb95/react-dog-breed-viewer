@@ -14,6 +14,30 @@ type FavouritesState = {
   removeFavourite: (imageUrl: string) => Promise<void>;
 };
 
+async function toggleFavourite(
+  set: (state: Partial<FavouritesState>) => void,
+  imageUrl: string,
+  method: 'POST' | 'DELETE',
+  errorMessage: string,
+) {
+  set({ isLoading: true, actionError: null, lastActionedUrl: imageUrl });
+  try {
+    const response = await apiClient<{ favourites: Favourites }>('/api/favourites', {
+      method,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ imageUrl }),
+    });
+    set({
+      favourites: response.favourites,
+      isLoading: false,
+      actionError: null,
+      lastActionedUrl: null,
+    });
+  } catch {
+    set({ actionError: errorMessage, isLoading: false });
+  }
+}
+
 export const useFavouritesStore = create<FavouritesState>((set) => ({
   favourites: [],
   isLoading: false,
@@ -32,46 +56,18 @@ export const useFavouritesStore = create<FavouritesState>((set) => ({
       });
     }
   },
-  addFavourite: async (imageUrl: string) => {
-    set({ isLoading: true, actionError: null, lastActionedUrl: imageUrl });
-    try {
-      const response = await apiClient<{ favourites: Favourites }>('/api/favourites', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ imageUrl }),
-      });
-      set({
-        favourites: response.favourites,
-        isLoading: false,
-        actionError: null,
-        lastActionedUrl: null,
-      });
-    } catch {
-      set({
-        actionError: "We couldn't add this image to your favourites. Please try again later.",
-        isLoading: false,
-      });
-    }
-  },
-  removeFavourite: async (imageUrl: string) => {
-    set({ isLoading: true, actionError: null, lastActionedUrl: imageUrl });
-    try {
-      const response = await apiClient<{ favourites: Favourites }>('/api/favourites', {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ imageUrl }),
-      });
-      set({
-        favourites: response.favourites,
-        isLoading: false,
-        actionError: null,
-        lastActionedUrl: null,
-      });
-    } catch {
-      set({
-        actionError: "We couldn't remove this image from your favourites. Please try again later.",
-        isLoading: false,
-      });
-    }
-  },
+  addFavourite: (imageUrl) =>
+    toggleFavourite(
+      set,
+      imageUrl,
+      'POST',
+      "We couldn't add this image to your favourites. Please try again later.",
+    ),
+  removeFavourite: (imageUrl) =>
+    toggleFavourite(
+      set,
+      imageUrl,
+      'DELETE',
+      "We couldn't remove this image from your favourites. Please try again later.",
+    ),
 }));

@@ -7,7 +7,7 @@ import { useState } from 'react';
 export function BreedSelector() {
   const breeds = useDogStore(({ breeds }) => breeds);
   const selectedBreed = useDogStore(({ selectedBreed }) => selectedBreed);
-  const onSelectBreed = useDogStore(({ setSelectedBreed }) => setSelectedBreed);
+  const setSelectedBreed = useDogStore(({ setSelectedBreed }) => setSelectedBreed);
   const isLoadingBreeds = useDogStore(({ isLoadingBreeds }) => isLoadingBreeds);
   const breedsError = useDogStore(({ breedsError }) => breedsError);
   const [searchQuery, setSearchQuery] = useState('');
@@ -52,8 +52,8 @@ export function BreedSelector() {
           filteredBreeds.map((breed) => (
             <button
               key={breed}
-              onClick={() => onSelectBreed(breed)}
-              className={`w-full text-left px-4 py-3 rounded-xl capitalize transition-all duration-200 flex items-center justify-between cursor-pointer ${
+              onClick={() => setSelectedBreed(breed)}
+              className={`w-full text-left px-4 py-2 rounded-xl capitalize transition-all duration-200 flex items-center justify-between cursor-pointer ${
                 selectedBreed === breed
                   ? 'bg-primary text-white shadow-md shadow-primary/20 font-semibold tracking-wide'
                   : 'text-text hover:bg-gray-50/80 active:bg-gray-100 font-medium'

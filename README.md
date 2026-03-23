@@ -39,81 +39,36 @@ npm run backend-server
 - **Build Tool**: [Vite 8](https://vitejs.dev/)
 - **Language**: [TypeScript](https://www.typescriptlang.org/)
 - **Styling**: [Tailwind CSS 4](https://tailwindcss.com/)
-- **State Management**: [Zustand](https://github.com/pmndrs/zustand)
+- **State Management**: [Zustand](https://zustand-demo.pmnd.rs/)
 
----
+### Known Limitations & Production Considerations
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Some trade-offs were made for scope that would need attention in a production environment.
 
-Currently, two official plugins are available:
+#### Authentication
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Authentication uses [DummyJSON](https://dummyjson.com/docs/auth), a mock API. There is no real user management, password hashing, or secure credential storage.
+- Token refresh runs on a client-side interval timer that doesn't survive page refreshes or multiple tabs.
 
-## React Compiler
+#### Favourites Backend
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Favourites are stored in a local JSON file (`favourites.json`) instead of a database. This doesn't scale, isn't concurrent-safe, and data would be lost in a containerised deployment.
+- There is no user association, so favourites are global and shared across all sessions.
+- The backend is a standalone Express server that must be run separately. In production this would be unified or deployed as its own service.
 
-## Expanding the ESLint configuration
+#### Testing
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Test coverage is limited to a few unit tests (`ErrorState`, `api-client`). A production app would benefit from integration tests, component tests for key user flows, and end-to-end tests.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+#### Deployment
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- The Vercel configuration proxies auth requests to DummyJSON but doesn't support the favourites backend, so that feature only works in local development.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
-```
+#### Other
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x';
-import reactDom from 'eslint-plugin-react-dom';
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
-```
+- No CI/CD pipeline.
+- No error boundaries. A runtime error in a component could crash the entire app.
+- Environment variables (API URLs, ports) are hardcoded rather than managed via `.env` files.
 
 ## Deployment
 

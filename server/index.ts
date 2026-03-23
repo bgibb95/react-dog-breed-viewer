@@ -29,21 +29,25 @@ app.post('/api/favourites', async (request: Request, response: Response) => {
 
   if (!imageUrl) return response.status(400).json({ error: 'imageUrl is required' });
 
-  let favourites: string[] = [];
-
   try {
-    const data = await fs.readFile(favouritesFile, 'utf-8');
-    favourites = JSON.parse(data);
+    let favourites: string[] = [];
+
+    try {
+      const data = await fs.readFile(favouritesFile, 'utf-8');
+      favourites = JSON.parse(data);
+    } catch {
+      // Defaults to empty list
+    }
+
+    if (!favourites.includes(imageUrl)) {
+      favourites.push(imageUrl);
+      await fs.writeFile(favouritesFile, JSON.stringify(favourites, null, 2));
+    }
+
+    response.status(201).json({ success: true, favourites });
   } catch {
-    // Defaults to empty list
+    response.status(500).json({ error: 'Failed to update favourites' });
   }
-
-  if (!favourites.includes(imageUrl)) {
-    favourites.push(imageUrl);
-    await fs.writeFile(favouritesFile, JSON.stringify(favourites, null, 2));
-  }
-
-  response.status(201).json({ success: true, favourites });
 });
 
 app.delete('/api/favourites', async (request: Request, response: Response) => {
